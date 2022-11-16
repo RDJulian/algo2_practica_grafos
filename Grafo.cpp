@@ -12,6 +12,9 @@ Grafo::Grafo(int tamanio) {
 
     for (int i = 0; i < tamanio; i++) {
         for (int j = 0; j < tamanio; j++) {
+            if (i == j) {
+                this->matrizAdyacencia[i][j] = 0;
+            }
             if (i != j) {
                 this->matrizAdyacencia[i][j] = INFINITO;
             }
