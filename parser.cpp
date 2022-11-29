@@ -19,26 +19,18 @@ void cargarGrafo(int mapa[TAMANIO_MAPA][TAMANIO_MAPA], Grafo* grafo) {
             if (verticeValido(i, j + 1)) {
                 aristasValidas.push_back(
                     Arista(indice(i, j), indice(i, j + 1), mapa[i][j + 1]));
-                aristasValidas.push_back(
-                    Arista(indice(i, j + 1), indice(i, j), mapa[i][j]));
             }
             if (verticeValido(i, j - 1)) {
                 aristasValidas.push_back(
                     Arista(indice(i, j), indice(i, j - 1), mapa[i][j - 1]));
-                aristasValidas.push_back(
-                    Arista(indice(i, j - 1), indice(i, j), mapa[i][j]));
             }
             if (verticeValido(i + 1, j)) {
                 aristasValidas.push_back(
                     Arista(indice(i, j), indice(i + 1, j), mapa[i + 1][j]));
-                aristasValidas.push_back(
-                    Arista(indice(i + 1, j), indice(i, j), mapa[i][j]));
             }
             if (verticeValido(i - 1, j)) {
                 aristasValidas.push_back(
                     Arista(indice(i, j), indice(i - 1, j), mapa[i - 1][j]));
-                aristasValidas.push_back(
-                    Arista(indice(i - 1, j), indice(i, j), mapa[i][j]));
             }
         }
     }
