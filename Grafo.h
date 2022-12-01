@@ -4,8 +4,9 @@
 
 class Grafo {
   private:
-    int** matrizAdyacencia;
-    int** matrizCaminosMinimos;
+    int** adyacencia;
+    int** pesos;
+    int** caminos;
     int tamanio;
 
   public:
@@ -13,6 +14,7 @@ class Grafo {
     void agregarAristaPonderada(Arista arista);
     void imprimirMatrizAdyacencia();
     void imprimirMatrizCaminosMinimos();
+    void imprimirMatrizPesosMinimos();
     void floydWarshall();
     ~Grafo();
 };

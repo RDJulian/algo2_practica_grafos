@@ -5,80 +5,93 @@ using namespace std;
 
 Grafo::Grafo(int tamanio) {
     this->tamanio = tamanio;
-    this->matrizAdyacencia = new int*[tamanio];
+    adyacencia = new int*[tamanio];
+    pesos = new int*[tamanio];
+    caminos = new int*[tamanio];
+
     for (int i = 0; i < tamanio; i++) {
-        this->matrizAdyacencia[i] = new int[tamanio];
+        adyacencia[i] = new int[tamanio];
+        pesos[i] = new int[tamanio];
+        caminos[i] = new int[tamanio];
     }
 
     for (int i = 0; i < tamanio; i++) {
         for (int j = 0; j < tamanio; j++) {
             if (i == j) {
-                this->matrizAdyacencia[i][j] = 0;
+                adyacencia[i][j] = 0;
             }
             if (i != j) {
-                this->matrizAdyacencia[i][j] = INFINITO;
+                adyacencia[i][j] = INFINITO;
             }
         }
-    }
-
-    this->matrizCaminosMinimos = new int*[tamanio];
-    for (int i = 0; i < tamanio; i++) {
-        this->matrizCaminosMinimos[i] = new int[tamanio];
     }
 }
 
 void Grafo::agregarAristaPonderada(Arista arista) {
-    this->matrizAdyacencia[arista.origen][arista.destino] = arista.peso;
+    adyacencia[arista.origen][arista.destino] = arista.peso;
 }
 
 void Grafo::imprimirMatrizAdyacencia() {
-    for (int i = 0; i < this->tamanio; i++) {
-        for (int j = 0; j < this->tamanio; j++) {
-            cout << this->matrizAdyacencia[i][j] << " ";
+    for (int i = 0; i < tamanio; i++) {
+        for (int j = 0; j < tamanio; j++) {
+            cout << adyacencia[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+
+void Grafo::imprimirMatrizPesosMinimos() {
+    for (int i = 0; i < tamanio; i++) {
+        for (int j = 0; j < tamanio; j++) {
+            cout << pesos[i][j] << " ";
         }
         cout << endl;
     }
 }
 
 void Grafo::imprimirMatrizCaminosMinimos() {
-    for (int i = 0; i < this->tamanio; i++) {
-        for (int j = 0; j < this->tamanio; j++) {
-            cout << this->matrizCaminosMinimos[i][j] << " ";
+    for (int i = 0; i < tamanio; i++) {
+        for (int j = 0; j < tamanio; j++) {
+            cout << caminos[i][j] << " ";
         }
         cout << endl;
     }
 }
 
 void Grafo::floydWarshall() {
-    for (int i = 0; i < this->tamanio; i++) {
-        for (int j = 0; j < this->tamanio; j++) {
-            this->matrizCaminosMinimos[i][j] = this->matrizAdyacencia[i][j];
+    for (int i = 0; i < tamanio; i++) {
+        for (int j = 0; j < tamanio; j++) {
+            pesos[i][j] = adyacencia[i][j];
+            caminos[i][j] = j;
         }
     }
 
-    for (int k = 0; k < this->tamanio; k++) {
-        for (int i = 0; i < this->tamanio; i++) {
-            for (int j = 0; j < this->tamanio; j++) {
-                if (this->matrizCaminosMinimos[i][j] >
-                        (this->matrizCaminosMinimos[i][k] +
-                         this->matrizCaminosMinimos[k][j]) &&
-                    (this->matrizCaminosMinimos[k][j] != INFINITO &&
-                     this->matrizCaminosMinimos[i][k] != INFINITO))
-                    this->matrizCaminosMinimos[i][j] =
-                        this->matrizCaminosMinimos[i][k] +
-                        this->matrizCaminosMinimos[k][j];
+    for (int k = 0; k < tamanio; k++) {
+        for (int i = 0; i < tamanio; i++) {
+            for (int j = 0; j < tamanio; j++) {
+                if (pesos[i][j] > (pesos[i][k] + pesos[k][j]) &&
+                    (pesos[k][j] != INFINITO && pesos[i][k] != INFINITO)) {
+                    pesos[i][j] = pesos[i][k] + pesos[k][j];
+                    caminos[i][j] = caminos[i][k];
+                }
             }
         }
     }
 }
 
 Grafo::~Grafo() {
-    for (int i = 0; i < this->tamanio; i++) {
-        delete[] this->matrizAdyacencia[i];
+    for (int i = 0; i < tamanio; i++) {
+        delete[] adyacencia[i];
     }
-    delete[] this->matrizAdyacencia;
-    for (int i = 0; i < this->tamanio; i++) {
-        delete[] this->matrizCaminosMinimos[i];
+    delete[] adyacencia;
+
+    for (int i = 0; i < tamanio; i++) {
+        delete[] pesos[i];
     }
-    delete[] this->matrizCaminosMinimos;
+    delete[] pesos;
+
+    for (int i = 0; i < tamanio; i++) {
+        delete[] caminos[i];
+    }
+    delete[] caminos;
 };
