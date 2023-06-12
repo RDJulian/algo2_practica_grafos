@@ -1,26 +1,20 @@
-#include "Grafo.h"
-#include "parser.h"
+#include "CaminoDD2.h"
 #include <iostream>
 
 using namespace std;
 
 int main() {
-    int mapa[TAMANIO_MAPA][TAMANIO_MAPA] = {
-        {C, T, T},
-        {C, C, P},
-        {T, C, C},
-    };
+    auto* dd2 = new CaminoDD2();
 
-    Grafo* grafoPonderado = new Grafo(TAMANIO_MAPA * TAMANIO_MAPA);
-    cargarGrafo(mapa, grafoPonderado);
-    grafoPonderado->floydWarshall();
-    grafoPonderado->imprimirMatrizAdyacencia();
+    pair<vector<size_t>, int> camino = dd2->obtenerCaminoMinimo();
+    cout << "El camino minimo es: ";
+    for (size_t i: camino.first) {
+        cout << i << " ";
+    }
     cout << endl;
-    grafoPonderado->imprimirMatrizPesosMinimos();
-    cout << endl;
-    grafoPonderado->imprimirMatrizCaminosMinimos();
 
-    delete grafoPonderado;
+    cout << "Se llega con un costo de: " << camino.second << endl;
 
+    delete dd2;
     return 0;
 }
