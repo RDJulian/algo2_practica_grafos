@@ -3,6 +3,8 @@
 
 using namespace std;
 
+const int NO_ENCONTRADO = -1;
+
 CaminoDD2::CaminoDD2() {
     pair<size_t, vector<Camino*>> data = Lector::leerArchivo(PATH_ARCHIVO_CSV);
     nodos = data.first;
@@ -30,28 +32,32 @@ Camino* CaminoDD2::buscarCamino(size_t origen, size_t destino) {
     return caminos[i];
 }
 
-pair<std::vector<size_t>, int> CaminoDD2::obtenerCaminoMinimo() {
-    vector<size_t> caminoInicial = grafo->obtenerCaminoMinimo(0, nodos - 1);
-    int pesoInicial = grafo->obtenerPesoMinimo(0, nodos - 1);
-
+int CaminoDD2::buscarCaminoRoto(const vector<size_t>& caminoInicial) {
+    int indice = NO_ENCONTRADO;
     size_t i = 0;
-    bool caminoRoto = false;
-    while (!caminoRoto && i < caminoInicial.size() - 1) {
+    while (indice == NO_ENCONTRADO && i < caminoInicial.size() - 1) {
         if (buscarCamino(caminoInicial[i], caminoInicial[i + 1])->esCaminoRoto()) {
-            caminoRoto = true;
+            indice = int(i);
         } else {
             i++;
         }
     }
+    return indice;
+}
 
-    if (caminoRoto) {
+pair<std::vector<size_t>, int> CaminoDD2::obtenerCaminoMinimo() {
+    vector<size_t> caminoInicial = grafo->obtenerCaminoMinimo(0, nodos - 1);
+    int pesoInicial = grafo->obtenerPesoMinimo(0, nodos - 1);
+    int i = buscarCaminoRoto(caminoInicial);
+
+    if (i != NO_ENCONTRADO) {
         vector<size_t> caminoFinal, caminoAlternativo;
-        caminoAlternativo = grafoRoto->obtenerCaminoMinimo(caminoInicial[i + 1], nodos - 1);
-        caminoFinal.insert(caminoFinal.end(), caminoInicial.begin(), caminoInicial.begin() + long(i + 1));
+        caminoAlternativo = grafoRoto->obtenerCaminoMinimo(caminoInicial[size_t(i) + 1], nodos - 1);
+        caminoFinal.insert(caminoFinal.end(), caminoInicial.begin(), caminoInicial.begin() + i + 1);
         caminoFinal.insert(caminoFinal.end(), caminoAlternativo.begin(), caminoAlternativo.end());
 
-        int pesoFinal = grafo->obtenerPesoMinimo(0, caminoInicial[i + 1]) +
-                        grafoRoto->obtenerPesoMinimo(caminoInicial[i + 1], nodos - 1);
+        int pesoFinal = grafo->obtenerPesoMinimo(0, caminoInicial[size_t(i) + 1]) +
+                        grafoRoto->obtenerPesoMinimo(caminoInicial[size_t(i) + 1], nodos - 1);
 
         return {caminoFinal, pesoFinal};
     } else {
