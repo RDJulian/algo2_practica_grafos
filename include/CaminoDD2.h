@@ -15,7 +15,7 @@ private:
 
     Camino* buscarCamino(size_t origen, size_t destino);
 
-    int buscarCaminoRoto(const std::vector<size_t>& caminoInicial);
+    Camino* buscarCaminoRoto(const std::vector<size_t>& caminoInicial);
 
 public:
     CaminoDD2();

@@ -38,6 +38,6 @@ El objetivo es, usando teoría de grafos, encontrar el mejor camino para avanzar
 
 ### Una simplificación para resolver en clase:
 
-Como este ejercicio se puede complejizar muy rápidamente, vamos a aproximar un poco. La mejor solución va a implicar
-esquivar de antemano caminos peligrosos (esto se deja como desafío altamente complicado para el que quiera intentar).
 Para la clase, vamos a simplemente **cambiar la estrategia de búsqueda** una vez detectamos que se rompe el carruaje.
+La mejor solución va a implicar una vuelta de tuerca sobre los grafos (o el grafo) con el que se va a calcular el
+camino...

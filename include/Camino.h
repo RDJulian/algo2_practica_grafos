@@ -3,13 +3,18 @@
 
 #include <cstddef>
 #include "constantes.h"
+#include "Grafo.h"
 
 class Camino {
 private:
     size_t origen;
     size_t destino;
     TipoCamino camino;
+
+    int calcularBase();
+
 public:
+
     Camino(size_t origen, size_t destino, TipoCamino camino);
 
     Arista calcularArista();
@@ -19,6 +24,8 @@ public:
     bool esCaminoRoto();
 
     bool operator==(std::pair<size_t, size_t> vertices) const;
+
+    std::pair<std::vector<size_t>, int> unirCaminos(Grafo* grafo, Grafo* grafoRoto, size_t nodos) const;
 };
 
 

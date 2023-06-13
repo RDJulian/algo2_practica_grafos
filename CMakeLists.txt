@@ -14,10 +14,10 @@ include_directories(src)
 
 add_executable(algo2_practica_grafos
         src/Grafo.cpp
-        src/Subsets.cpp
         src/CaminoDD2.cpp
         src/Camino.cpp
         src/Lector.cpp
-        main.cpp src/Matriz.cpp)
+        src/Matriz.cpp
+        main.cpp)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "programa.exe")

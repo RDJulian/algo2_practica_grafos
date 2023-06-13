@@ -8,7 +8,7 @@ Camino::Camino(size_t origen, size_t destino, TipoCamino camino) {
     this->camino = camino;
 }
 
-Arista Camino::calcularArista() {
+int Camino::calcularBase() {
     int peso;
     if (camino == piedra || camino == piedraR) {
         peso = PIEDRA;
@@ -17,32 +17,19 @@ Arista Camino::calcularArista() {
     } else {
         peso = AGUA;
     }
-    return {origen, destino, peso};
+    return peso;
+}
+
+Arista Camino::calcularArista() {
+    return {origen, destino, calcularBase()};
 }
 
 Arista Camino::calcularAristaRota() {
-    int peso;
-    switch (camino) {
-        case piedra:
-            peso = PIEDRA;
-            break;
-        case tierra:
-            peso = TIERRA;
-            break;
-        case agua:
-            peso = AGUA;
-            break;
-        case piedraR:
-            peso = PIEDRA * PENALIZACION;
-            break;
-        case tierraR:
-            peso = TIERRA * PENALIZACION;
-            break;
-        case aguaR:
-            peso = AGUA * PENALIZACION;
-            break;
+    Arista arista = calcularArista();
+    if (esCaminoRoto()) {
+        arista.peso *= PENALIZACION;
     }
-    return {origen, destino, peso};
+    return arista;
 }
 
 bool Camino::esCaminoRoto() {
@@ -51,4 +38,17 @@ bool Camino::esCaminoRoto() {
 
 bool Camino::operator==(pair<size_t, size_t> vertices) const {
     return origen == vertices.first && destino == vertices.second;
+}
+
+pair<vector<size_t>, int> Camino::unirCaminos(Grafo* grafo, Grafo* grafoRoto, size_t nodoFinal) const {
+    vector<size_t> caminoUnido, caminoInicial, caminoFinal;
+    caminoInicial = grafo->obtenerCaminoMinimo(0, origen);
+    caminoFinal = grafoRoto->obtenerCaminoMinimo(destino, nodoFinal);
+    caminoUnido.insert(caminoUnido.end(), caminoInicial.begin(), caminoInicial.end());
+    caminoUnido.insert(caminoUnido.end(), caminoFinal.begin(), caminoFinal.end());
+
+    int peso = grafo->obtenerPesoMinimo(0, destino) +
+               grafoRoto->obtenerPesoMinimo(destino, nodoFinal);
+
+    return {caminoUnido, peso};
 }
