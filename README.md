@@ -15,11 +15,11 @@ Esta parte de "cuál es el camino más óptimo para avanzar" es crucial para pod
 
 ## El ejercicio:
 
-Simplificando muchos aspectos, se tiene el siguiente mapa del nivel actual. El objetivo es llegar desde el comienzo (
-nodo 0) al final (nodo 12, en este caso, pero pueden ser más).
+Simplificando muchos aspectos, se tiene el siguiente mapa del nivel actual. El objetivo es llegar desde el comienzo
+(nodo 0) al final (nodo 12 en este caso, pero pueden ser más).
 
 <p align="center">
-  <img width="75%" height="75%" src="images/Mapa.png" alt="Mapa">
+  <img width="50%" height="50%" src="images/Mapa.png" alt="Mapa">
 </p>
 
 Sin embargo, no todos los caminos son igual de óptimos:
