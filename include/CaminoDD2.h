@@ -12,6 +12,7 @@ private:
     size_t nodos;
     Grafo* grafo;
     Grafo* grafoRoto;
+    Grafo* grafoMejorado;
 
     Camino* buscarCamino(size_t origen, size_t destino);
 
@@ -20,9 +21,11 @@ private:
 public:
     CaminoDD2();
 
-    std::pair<std::vector<size_t>, int> obtenerCaminoMinimo();
+    std::pair<std::vector<size_t>, int> obtenerCaminoAproximado();
 
     ~CaminoDD2();
+
+    std::pair<std::vector<size_t>, int> obtenerCaminoMejorado();
 };
 
 #endif

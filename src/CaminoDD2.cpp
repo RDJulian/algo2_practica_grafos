@@ -1,3 +1,4 @@
+#include <set>
 #include "CaminoDD2.h"
 #include "Lector.h"
 
@@ -10,11 +11,24 @@ CaminoDD2::CaminoDD2() {
 
     grafo = new Grafo(nodos);
     grafoRoto = new Grafo(nodos);
+    grafoMejorado = new Grafo(nodos * 2);
 
     for (Camino* camino: caminos) {
-        grafo->agregarAristaPonderada(camino->calcularArista());
-        grafoRoto->agregarAristaPonderada(camino->calcularAristaRota());
+        Arista arista = camino->calcularArista();
+        Arista aristaRota = camino->calcularAristaRota();
+
+        grafo->agregarAristaPonderada(arista);
+        grafoRoto->agregarAristaPonderada(aristaRota);
+
+        if (camino->esCaminoRoto()) {
+            arista.destino += nodos;
+        }
+        grafoMejorado->agregarAristaPonderada(arista);
+        aristaRota.origen += nodos;
+        aristaRota.destino += nodos;
+        grafoMejorado->agregarAristaPonderada(aristaRota);
     }
+    grafoMejorado->agregarAristaPonderada(Arista((nodos * 2) - 1, nodos - 1, 0));
 }
 
 Camino* CaminoDD2::buscarCamino(size_t origen, size_t destino) {
@@ -46,7 +60,7 @@ Camino* CaminoDD2::buscarCaminoRoto(const vector<size_t>& caminoInicial) {
     return camino;
 }
 
-pair<std::vector<size_t>, int> CaminoDD2::obtenerCaminoMinimo() {
+pair<std::vector<size_t>, int> CaminoDD2::obtenerCaminoAproximado() {
     vector<size_t> camino = grafo->obtenerCaminoMinimo(0, nodos - 1);
     Camino* caminoRoto = buscarCaminoRoto(camino);
     if (caminoRoto) {
@@ -55,6 +69,23 @@ pair<std::vector<size_t>, int> CaminoDD2::obtenerCaminoMinimo() {
         int peso = grafo->obtenerPesoMinimo(0, nodos - 1);
         return {camino, peso};
     }
+}
+
+pair<std::vector<size_t>, int> CaminoDD2::obtenerCaminoMejorado() {
+    vector<size_t> camino, resultado;
+    camino = grafoMejorado->obtenerCaminoMinimo(0, nodos - 1);
+    set<size_t> filtro;
+    for (auto i: camino) {
+        if (i >= nodos) {
+            i -= nodos;
+        }
+        filtro.insert(i);
+    }
+    for (auto i: filtro) {
+        resultado.push_back(i);
+    }
+    int peso = grafoMejorado->obtenerPesoMinimo(0, nodos - 1);
+    return {resultado, peso};
 }
 
 CaminoDD2::~CaminoDD2() {
